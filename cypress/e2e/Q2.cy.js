@@ -54,7 +54,5 @@ describe('Navigation Menu Test', () => {
         cy.get('.cky-notice-btn-wrapper > .cky-btn-accept').click();
 
         cy.get('.footer-blocks--block--last').scrollIntoView();
-
-        // cy.get(input[type="file"]).attachFile('TestUpload',{subjectType:'drag-n-drop'});
     });
 });
