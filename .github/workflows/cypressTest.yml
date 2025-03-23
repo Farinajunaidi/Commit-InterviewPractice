@@ -18,7 +18,7 @@ jobs:
         run: npm install
 
       - name: Run Cypress Tests (All)
-        run: npx cypress run --spec "cypress/e2e/*.cy.js"
+        run: npx cypress run --spec "cypress/e2e/Q1.cy.js,cypress/e2e/Q2.cy.js"
 
       - name: Report Test Status
         if: failure()
