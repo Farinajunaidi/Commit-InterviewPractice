@@ -5,6 +5,7 @@ on: [push, pull_request]
 jobs:
   cypress-run:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -12,13 +13,27 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 18  # Use stable LTS version
+
+      - name: Cache Node Modules
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
 
       - name: Install Dependencies
-        run: npm install
+        run: npm ci  # Use npm ci for clean installation
+
+      - name: Install Cypress
+        run: npx cypress install  # Explicitly install Cypress
+
+      - name: Fix Cypress Permissions
+        run: chmod +x ./node_modules/.bin/cypress
 
       - name: Run Cypress Tests (All)
-        run: npx cypress run --spec "cypress/e2e/Q1.cy.js,cypress/e2e/Q2.cy.js"
+        run: npx cypress run --spec "cypress/e2e/*.cy.js"
 
       - name: Report Test Status
         if: failure()
